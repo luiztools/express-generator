@@ -1,32 +1,31 @@
 #!/usr/bin/env node
 
-var ejs = require('ejs')
-var fs = require('fs')
-var minimatch = require('minimatch')
-var mkdirp = require('mkdirp')
-var parseArgs = require('minimist')
-var path = require('path')
-var readline = require('readline')
-var sortedObject = require('sorted-object')
-var util = require('util')
+const ejs = require('ejs')
+const fs = require('fs')
+const minimatch = require('minimatch')
+const mkdirp = require('mkdirp')
+const parseArgs = require('minimist')
+const path = require('path')
+const readline = require('readline')
+const sortedObject = require('sorted-object')
+const util = require('util')
 
-var MODE_0666 = parseInt('0666', 8)
-var MODE_0755 = parseInt('0755', 8)
-var TEMPLATE_DIR = path.join(__dirname, '..', 'templates')
-var VERSION = require('../package').version
+const MODE_0666 = parseInt('0666', 8)
+const MODE_0755 = parseInt('0755', 8)
+const TEMPLATE_DIR = path.join(__dirname, '..', 'templates')
+const VERSION = require('../package').version
 
 // parse args
-var unknown = []
-var args = parseArgs(process.argv.slice(2), {
+const unknown = []
+const args = parseArgs(process.argv.slice(2), {
   alias: {
     c: 'css',
     e: 'ejs',
     f: 'force',
     h: 'help',
-    H: 'hogan',
     v: 'view'
   },
-  boolean: ['ejs', 'force', 'git', 'hbs', 'help', 'hogan', 'pug', 'version'],
+  boolean: ['ejs', 'force', 'git', 'help', 'version'],
   default: { css: true, view: true },
   string: ['css', 'view'],
   unknown: function (s) {
@@ -46,7 +45,7 @@ main(args, exit)
  */
 
 function confirm (msg, callback) {
-  var rl = readline.createInterface({
+  const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   })
@@ -90,7 +89,7 @@ function createApplication (name, dir, options, done) {
   console.log()
 
   // Package
-  var pkg = {
+  const pkg = {
     name: name,
     version: '0.0.0',
     private: true,
@@ -98,14 +97,14 @@ function createApplication (name, dir, options, done) {
       start: 'node ./bin/www'
     },
     dependencies: {
-      debug: '~2.6.9',
-      express: '~4.17.1'
+      debug: '~4.3.4',
+      express: '~4.18.2'
     }
   }
 
   // JavaScript
-  var app = loadTemplate('js/app.js')
-  var www = loadTemplate('js/www')
+  const app = loadTemplate('js/app.js')
+  const www = loadTemplate('js/www')
 
   // App name
   www.locals.name = name
@@ -123,12 +122,11 @@ function createApplication (name, dir, options, done) {
 
   // Body parsers
   app.locals.uses.push('express.json()')
-  app.locals.uses.push('express.urlencoded({ extended: false })')
 
   // Cookie parser
   app.locals.modules.cookieParser = 'cookie-parser'
   app.locals.uses.push('cookieParser()')
-  pkg.dependencies['cookie-parser'] = '~1.4.5'
+  pkg.dependencies['cookie-parser'] = '~1.4.6'
 
   if (dir !== '.') {
     mkdir(dir, '.')
@@ -139,24 +137,7 @@ function createApplication (name, dir, options, done) {
   mkdir(dir, 'public/images')
   mkdir(dir, 'public/stylesheets')
 
-  // copy css templates
-  switch (options.css) {
-    case 'less':
-      copyTemplateMulti('css', dir + '/public/stylesheets', '*.less')
-      break
-    case 'stylus':
-      copyTemplateMulti('css', dir + '/public/stylesheets', '*.styl')
-      break
-    case 'compass':
-      copyTemplateMulti('css', dir + '/public/stylesheets', '*.scss')
-      break
-    case 'sass':
-      copyTemplateMulti('css', dir + '/public/stylesheets', '*.sass')
-      break
-    default:
-      copyTemplateMulti('css', dir + '/public/stylesheets', '*.css')
-      break
-  }
+  copyTemplateMulti('css', dir + '/public/stylesheets', '*.css')
 
   // copy route templates
   mkdir(dir, 'routes')
@@ -165,60 +146,11 @@ function createApplication (name, dir, options, done) {
   if (options.view) {
     // Copy view templates
     mkdir(dir, 'views')
-    pkg.dependencies['http-errors'] = '~1.7.2'
-    switch (options.view) {
-      case 'dust':
-        copyTemplateMulti('views', dir + '/views', '*.dust')
-        break
-      case 'ejs':
-        copyTemplateMulti('views', dir + '/views', '*.ejs')
-        break
-      case 'hbs':
-        copyTemplateMulti('views', dir + '/views', '*.hbs')
-        break
-      case 'hjs':
-        copyTemplateMulti('views', dir + '/views', '*.hjs')
-        break
-      case 'jade':
-        copyTemplateMulti('views', dir + '/views', '*.jade')
-        break
-      case 'pug':
-        copyTemplateMulti('views', dir + '/views', '*.pug')
-        break
-      case 'twig':
-        copyTemplateMulti('views', dir + '/views', '*.twig')
-        break
-      case 'vash':
-        copyTemplateMulti('views', dir + '/views', '*.vash')
-        break
-    }
+    pkg.dependencies['http-errors'] = '~2.0.0'
+    copyTemplateMulti('views', dir + '/views', '*.ejs')
   } else {
     // Copy extra public files
     copyTemplate('js/index.html', path.join(dir, 'public/index.html'))
-  }
-
-  // CSS Engine support
-  switch (options.css) {
-    case 'compass':
-      app.locals.modules.compass = 'node-compass'
-      app.locals.uses.push("compass({ mode: 'expanded' })")
-      pkg.dependencies['node-compass'] = '0.2.3'
-      break
-    case 'less':
-      app.locals.modules.lessMiddleware = 'less-middleware'
-      app.locals.uses.push("lessMiddleware(path.join(__dirname, 'public'))")
-      pkg.dependencies['less-middleware'] = '~2.2.1'
-      break
-    case 'sass':
-      app.locals.modules.sassMiddleware = 'node-sass-middleware'
-      app.locals.uses.push("sassMiddleware({\n  src: path.join(__dirname, 'public'),\n  dest: path.join(__dirname, 'public'),\n  indentedSyntax: true, // true = .sass and false = .scss\n  sourceMap: true\n})")
-      pkg.dependencies['node-sass-middleware'] = '0.11.0'
-      break
-    case 'stylus':
-      app.locals.modules.stylus = 'stylus'
-      app.locals.uses.push("stylus.middleware(path.join(__dirname, 'public'))")
-      pkg.dependencies.stylus = '0.54.5'
-      break
   }
 
   // Index router mount
@@ -231,41 +163,9 @@ function createApplication (name, dir, options, done) {
 
   // Template support
   switch (options.view) {
-    case 'dust':
-      app.locals.modules.adaro = 'adaro'
-      app.locals.view = {
-        engine: 'dust',
-        render: 'adaro.dust()'
-      }
-      pkg.dependencies.adaro = '~1.0.4'
-      break
     case 'ejs':
       app.locals.view = { engine: 'ejs' }
-      pkg.dependencies.ejs = '~2.6.1'
-      break
-    case 'hbs':
-      app.locals.view = { engine: 'hbs' }
-      pkg.dependencies.hbs = '~4.0.4'
-      break
-    case 'hjs':
-      app.locals.view = { engine: 'hjs' }
-      pkg.dependencies.hjs = '~0.0.6'
-      break
-    case 'jade':
-      app.locals.view = { engine: 'jade' }
-      pkg.dependencies.jade = '~1.11.0'
-      break
-    case 'pug':
-      app.locals.view = { engine: 'pug' }
-      pkg.dependencies.pug = '2.0.0-beta11'
-      break
-    case 'twig':
-      app.locals.view = { engine: 'twig' }
-      pkg.dependencies.twig = '~0.10.3'
-      break
-    case 'vash':
-      app.locals.view = { engine: 'vash' }
-      pkg.dependencies.vash = '~0.12.6'
+      pkg.dependencies.ejs = '~3.1.9'
       break
     default:
       app.locals.view = false
@@ -366,8 +266,8 @@ function exit (code) {
     if (!(draining--)) process.exit(code)
   }
 
-  var draining = 0
-  var streams = [process.stdout, process.stderr]
+  let draining = 0
+  const streams = [process.stdout, process.stderr]
 
   exit.exited = true
 
@@ -394,8 +294,8 @@ function launchedFromCmd () {
  */
 
 function loadTemplate (name) {
-  var contents = fs.readFileSync(path.join(__dirname, '..', 'templates', (name + '.ejs')), 'utf-8')
-  var locals = Object.create(null)
+  const contents = fs.readFileSync(path.join(__dirname, '..', 'templates', (name + '.ejs')), 'utf-8')
+  const locals = Object.create(null)
 
   function render () {
     return ejs.render(contents, locals, {
@@ -440,34 +340,9 @@ function main (options, done) {
     // App name
     var appName = createAppName(path.resolve(destinationPath)) || 'hello-world'
 
-    // View engine
-    if (options.view === true) {
-      if (options.ejs) {
-        options.view = 'ejs'
-        warning("option `--ejs' has been renamed to `--view=ejs'")
-      }
-
-      if (options.hbs) {
-        options.view = 'hbs'
-        warning("option `--hbs' has been renamed to `--view=hbs'")
-      }
-
-      if (options.hogan) {
-        options.view = 'hjs'
-        warning("option `--hogan' has been renamed to `--view=hjs'")
-      }
-
-      if (options.pug) {
-        options.view = 'pug'
-        warning("option `--pug' has been renamed to `--view=pug'")
-      }
-    }
-
     // Default view engine
     if (options.view === true) {
-      warning('the default view engine will not be jade in future releases\n' +
-        "use `--view=jade' or `--help' for additional options")
-      options.view = 'jade'
+      options.view = 'ejs'
     }
 
     // Generate application
@@ -497,7 +372,7 @@ function main (options, done) {
  */
 
 function mkdir (base, dir) {
-  var loc = path.join(base, dir)
+  const loc = path.join(base, dir)
 
   console.log('   \x1b[36mcreate\x1b[0m : ' + loc + path.sep)
   mkdirp.sync(loc, MODE_0755)
@@ -514,12 +389,8 @@ function usage () {
   console.log('  Options:')
   console.log('')
   console.log('    -e, --ejs            add ejs engine support')
-  console.log('        --pug            add pug engine support')
-  console.log('        --hbs            add handlebars engine support')
-  console.log('    -H, --hogan          add hogan.js engine support')
-  console.log('    -v, --view <engine>  add view <engine> support (dust|ejs|hbs|hjs|jade|pug|twig|vash) (defaults to jade)')
+  console.log('    -v, --view <engine>  add view <engine> support (ejs) (defaults to EJS)')
   console.log('        --no-view        use static html instead of view engine')
-  console.log('    -c, --css <engine>   add stylesheet <engine> support (less|stylus|compass|sass) (defaults to plain css)')
   console.log('        --git            add .gitignore')
   console.log('    -f, --force          force on non-empty directory')
   console.log('    --version            output the version number')
