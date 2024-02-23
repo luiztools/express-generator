@@ -1,14 +1,14 @@
 <% if (view) { -%>
-  const createError = require('http-errors');
+const createError = require('http-errors');
 <% } -%>
 const express = require('express');
 const path = require('path');
 <% Object.keys(modules).sort().forEach(function (variable) { -%>
-  const <%- variable %> = require('<%- modules[variable] %>');
+const <%- variable %> = require('<%- modules[variable] %>');
 <% }); -%>
 
 <% Object.keys(localModules).sort().forEach(function (variable) { -%>
-  const <%- variable %> = require('<%- localModules[variable] %>');
+const <%- variable %> = require('<%- localModules[variable] %>');
 <% }); -%>
 
 const app = express();
