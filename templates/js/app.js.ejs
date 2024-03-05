@@ -3,11 +3,11 @@ const createError = require('http-errors');
 <% } -%>
 const express = require('express');
 const path = require('path');
-<% Object.keys(modules).sort().forEach(function (variable) { -%>
+<% Object.keys(modules).sort().forEach((variable) => { -%>
 const <%- variable %> = require('<%- modules[variable] %>');
 <% }); -%>
 
-<% Object.keys(localModules).sort().forEach(function (variable) { -%>
+<% Object.keys(localModules).sort().forEach((variable) => { -%>
 const <%- variable %> = require('<%- localModules[variable] %>');
 <% }); -%>
 
@@ -22,22 +22,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', '<%- view.engine %>');
 
 <% } -%>
-<% uses.forEach(function (use) { -%>
+<% uses.forEach((use) => { -%>
 app.use(<%- use %>);
 <% }); -%>
 
-<% mounts.forEach(function (mount) { -%>
+<% mounts.forEach((mount) => { -%>
 app.use(<%= mount.path %>, <%- mount.code %>);
 <% }); -%>
 
 <% if (view) { -%>
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

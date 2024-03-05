@@ -1,7 +1,7 @@
 {
   "name": "express-generator",
   "description": "Express' application generator (LuizTools version)",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "LuizTools",
   "contributors": [
     "TJ Holowaychuk <tj@vision-media.ca>",
