@@ -33,7 +33,7 @@ describe('express(1)', function () {
         ctx.files = utils.parseCreatedFiles(stdout, ctx.dir)
         ctx.stdout = stdout
         ctx.warnings = warnings
-        assert.strictEqual(ctx.files.length, 15)
+        assert.strictEqual(ctx.files.length, 16)
         done()
       })
     })
@@ -115,7 +115,7 @@ describe('express(1)', function () {
       it('should create basic app', function (done) {
         run(ctx0.dir, [], function (err, output) {
           if (err) return done(err)
-          assert.strictEqual(utils.parseCreatedFiles(output, ctx0.dir).length, 15)
+          assert.strictEqual(utils.parseCreatedFiles(output, ctx0.dir).length, 16)
           done()
         })
       })
@@ -135,7 +135,7 @@ describe('express(1)', function () {
       it('should create basic app', function (done) {
         run(ctx1.dir, [], function (err, output) {
           if (err) return done(err)
-          assert.strictEqual(utils.parseCreatedFiles(output, ctx1.dir).length, 15)
+          assert.strictEqual(utils.parseCreatedFiles(output, ctx1.dir).length, 16)
           done()
         })
       })
@@ -190,7 +190,7 @@ describe('express(1)', function () {
         ctx.files = utils.parseCreatedFiles(stdout, ctx.dir)
         ctx.stderr = stderr
         ctx.stdout = stdout
-        assert.strictEqual(ctx.files.length, 16)
+        assert.strictEqual(ctx.files.length, 17)
         done()
       })
     })
@@ -259,7 +259,7 @@ describe('express(1)', function () {
         if (err) return done(err)
         ctx.warnings = warnings
         ctx.files = utils.parseCreatedFiles(stdout, ctx.dir)
-        assert.strictEqual(ctx.files.length, 15, 'should have 15 files')
+        assert.strictEqual(ctx.files.length, 16, 'should have 16 files')
         done()
       })
     })
@@ -343,7 +343,7 @@ describe('express(1)', function () {
       run(ctx.dir, ['--no-view'], function (err, stdout) {
         if (err) return done(err)
         ctx.files = utils.parseCreatedFiles(stdout, ctx.dir)
-        assert.strictEqual(ctx.files.length, 13)
+        assert.strictEqual(ctx.files.length, 14)
         done()
       })
     })

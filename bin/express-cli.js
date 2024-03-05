@@ -44,7 +44,7 @@ main(args, exit)
  * Prompt for confirmation on STDOUT/STDIN
  */
 
-function confirm (msg, callback) {
+function confirm(msg, callback) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -60,7 +60,7 @@ function confirm (msg, callback) {
  * Copy file from template directory.
  */
 
-function copyTemplate (from, to) {
+function copyTemplate(from, to) {
   write(to, fs.readFileSync(path.join(TEMPLATE_DIR, from), 'utf-8'))
 }
 
@@ -68,7 +68,7 @@ function copyTemplate (from, to) {
  * Copy multiple files from template directory.
  */
 
-function copyTemplateMulti (fromDir, toDir, nameGlob) {
+function copyTemplateMulti(fromDir, toDir, nameGlob) {
   fs.readdirSync(path.join(TEMPLATE_DIR, fromDir))
     .filter(minimatch.filter(nameGlob, { matchBase: true }))
     .forEach(function (name) {
@@ -85,7 +85,7 @@ function copyTemplateMulti (fromDir, toDir, nameGlob) {
  * @param {function} done
  */
 
-function createApplication (name, dir, options, done) {
+function createApplication(name, dir, options, done) {
   console.log()
 
   // Package
@@ -175,9 +175,8 @@ function createApplication (name, dir, options, done) {
   // Static files
   app.locals.uses.push("express.static(path.join(__dirname, 'public'))")
 
-  if (options.git) {
-    copyTemplate('js/gitignore', path.join(dir, '.gitignore'))
-  }
+  //git ignore by default
+  copyTemplate('js/gitignore', path.join(dir, '.gitignore'))
 
   // sort dependencies like npm(1)
   pkg.dependencies = sortedObject(pkg.dependencies)
@@ -219,7 +218,7 @@ function createApplication (name, dir, options, done) {
  * @param {String} pathName
  */
 
-function createAppName (pathName) {
+function createAppName(pathName) {
   return path.basename(pathName)
     .replace(/[^A-Za-z0-9.-]+/g, '-')
     .replace(/^[-_.]+|-+$/g, '')
@@ -233,7 +232,7 @@ function createAppName (pathName) {
  * @param {Function} fn
  */
 
-function emptyDirectory (dir, fn) {
+function emptyDirectory(dir, fn) {
   fs.readdir(dir, function (err, files) {
     if (err && err.code !== 'ENOENT') throw err
     fn(!files || !files.length)
@@ -246,7 +245,7 @@ function emptyDirectory (dir, fn) {
  * @param {String} message
  */
 
-function error (message) {
+function error(message) {
   console.error()
   message.split('\n').forEach(function (line) {
     console.error('  error: %s', line)
@@ -258,11 +257,11 @@ function error (message) {
  * Graceful exit for async STDIO
  */
 
-function exit (code) {
+function exit(code) {
   // flush output for Node.js Windows pipe bug
   // https://github.com/joyent/node/issues/6247 is just one bug example
   // https://github.com/visionmedia/mocha/issues/333 has a good discussion
-  function done () {
+  function done() {
     if (!(draining--)) process.exit(code)
   }
 
@@ -284,7 +283,7 @@ function exit (code) {
  * Determine if launched from cmd.exe
  */
 
-function launchedFromCmd () {
+function launchedFromCmd() {
   return process.platform === 'win32' &&
     process.env._ === undefined
 }
@@ -293,11 +292,11 @@ function launchedFromCmd () {
  * Load template file.
  */
 
-function loadTemplate (name) {
+function loadTemplate(name) {
   const contents = fs.readFileSync(path.join(__dirname, '..', 'templates', (name + '.ejs')), 'utf-8')
   const locals = Object.create(null)
 
-  function render () {
+  function render() {
     return ejs.render(contents, locals, {
       escape: util.inspect
     })
@@ -313,7 +312,7 @@ function loadTemplate (name) {
  * Main program.
  */
 
-function main (options, done) {
+function main(options, done) {
   // top-level argument direction
   if (options['!'].length > 0) {
     usage()
@@ -371,7 +370,7 @@ function main (options, done) {
  * @param {string} dir
  */
 
-function mkdir (base, dir) {
+function mkdir(base, dir) {
   const loc = path.join(base, dir)
 
   console.log('   \x1b[36mcreate\x1b[0m : ' + loc + path.sep)
@@ -382,7 +381,7 @@ function mkdir (base, dir) {
  * Display the usage.
  */
 
-function usage () {
+function usage() {
   console.log('')
   console.log('  Usage: express [options] [dir]')
   console.log('')
@@ -391,7 +390,6 @@ function usage () {
   console.log('    -e, --ejs            add ejs engine support')
   console.log('    -v, --view <engine>  add view <engine> support (ejs) (defaults to EJS)')
   console.log('        --no-view        use static html instead of view engine')
-  console.log('        --git            add .gitignore')
   console.log('    -f, --force          force on non-empty directory')
   console.log('    --version            output the version number')
   console.log('    -h, --help           output usage information')
@@ -401,7 +399,7 @@ function usage () {
  * Display the version.
  */
 
-function version () {
+function version() {
   console.log(VERSION)
 }
 
@@ -411,7 +409,7 @@ function version () {
  * @param {String} message
  */
 
-function warning (message) {
+function warning(message) {
   console.error()
   message.split('\n').forEach(function (line) {
     console.error('  warning: %s', line)
@@ -426,7 +424,7 @@ function warning (message) {
  * @param {String} str
  */
 
-function write (file, str, mode) {
+function write(file, str, mode) {
   fs.writeFileSync(file, str, { mode: mode || MODE_0666 })
   console.log('   \x1b[36mcreate\x1b[0m : ' + file)
 }

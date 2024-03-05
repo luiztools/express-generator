@@ -1,26 +1,21 @@
 [![Express Logo](https://i.cloudup.com/zfY6lL7eFa-3000x3000.png)](http://expressjs.com/)
 
-[Express'](https://www.npmjs.com/package/express) application generator (LuizTools version).
-
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-[![Linux Build][github-actions-ci-image]][github-actions-ci-url]
-[![Windows Build][appveyor-image]][appveyor-url]
+[Express'](https://www.npmjs.com/package/express) application generator (LuizTools version, EJS only).
 
 ## Installation
 
 ```sh
-$ npm install -g express-generator
+$ npm install -g https://github.com/luiztools/express-generator.git
 ```
 
 ## Quick Start
 
-The quickest way to get started with express is to utilize the executable `express(1)` to generate an application as shown below:
+The quickest way to get started with express is to utilize the command `express` to generate an application as shown below:
 
 Create the app:
 
 ```bash
-$ express --view=ejs /tmp/foo && cd /tmp/foo
+$ express /tmp/foo && cd /tmp/foo
 ```
 
 Install dependencies:
@@ -40,23 +35,19 @@ $ npm start
 This generator can also be further configured with the following command line flags.
 
         --version        output the version number
-    -e, --ejs            add ejs engine support
-    -v, --view <engine>  add view <engine> support (ejs) (defaults to EJS)
         --no-view        use static html instead of view engine
-    -c, --css <engine>   add stylesheet <engine> support (less|stylus|compass|sass) (defaults to plain css)
-        --git            add .gitignore
     -f, --force          force on non-empty directory
     -h, --help           output usage information
+
+## About
+
+Follow me on social networks: https://about.me/luiztools
+
+Receive news on Telegram: https://t.me/luiznews
 
 ## License
 
 [MIT](LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/express-generator.svg
-[npm-url]: https://npmjs.org/package/express-generator
-[appveyor-image]: https://img.shields.io/appveyor/ci/dougwilson/generator/master.svg?label=windows
-[appveyor-url]: https://ci.appveyor.com/project/dougwilson/generator
 [downloads-image]: https://img.shields.io/npm/dm/express-generator.svg
-[downloads-url]: https://npmjs.org/package/express-generator
-[github-actions-ci-image]: https://img.shields.io/github/workflow/status/expressjs/generator/ci/master?label=linux
-[github-actions-ci-url]: https://github.com/expressjs/generator/actions/workflows/ci.yml
