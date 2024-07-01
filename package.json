@@ -1,7 +1,7 @@
 {
   "name": "express-generator",
   "description": "Express' application generator (LuizTools version)",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "LuizTools",
   "contributors": [
     "TJ Holowaychuk <tj@vision-media.ca>",
@@ -26,7 +26,7 @@
   "repository": "github.com/luiztools/express-generator",
   "license": "MIT",
   "dependencies": {
-    "ejs": "3.1.9",
+    "ejs": "^3.1.10",
     "minimatch": "9.0.3",
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
