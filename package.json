@@ -1,7 +1,7 @@
 {
   "name": "express-generator",
   "description": "Express' application generator (LuizTools version)",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "LuizTools",
   "contributors": [
     "TJ Holowaychuk <tj@vision-media.ca>",
@@ -27,7 +27,7 @@
   "license": "MIT",
   "dependencies": {
     "ejs": "^3.1.10",
-    "minimatch": "9.0.3",
+    "minimatch": "10.0.1",
     "minimist": "1.2.8",
     "mkdirp": "3.0.1",
     "sorted-object": "2.0.1"
@@ -40,18 +40,18 @@
   "devDependencies": {
     "eslint": "8.56.0",
     "eslint-config-standard": "17.1.0",
-    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-import": "2.31.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.1.1",
-    "mocha": "10.3.0",
-    "rimraf": "5.0.5",
-    "supertest": "6.3.4",
+    "mocha": "11.1.0",
+    "rimraf": "6.0.1",
+    "supertest": "7.1.0",
     "tree-kill": "1.2.2",
     "uid-safe": "2.1.5",
-    "validate-npm-package-name": "5.0.0"
+    "validate-npm-package-name": "6.0.0"
   },
   "engines": {
-    "node": ">= 0.18"
+    "node": ">= 0.20"
   },
   "files": [
     "LICENSE",

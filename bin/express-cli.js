@@ -97,8 +97,8 @@ function createApplication(name, dir, options, done) {
       start: 'node ./bin/www'
     },
     dependencies: {
-      debug: '~4.3.4',
-      express: '~4.18.2'
+      debug: '~4.4.0',
+      express: '~5.1.0'
     }
   }
 
@@ -131,7 +131,7 @@ function createApplication(name, dir, options, done) {
   // Cookie parser
   app.locals.modules.cookieParser = 'cookie-parser';
   app.locals.uses.push('cookieParser()');
-  pkg.dependencies['cookie-parser'] = '~1.4.6';
+  pkg.dependencies['cookie-parser'] = '~1.4.7';
 
   if (dir !== '.') {
     mkdir(dir, '.');
@@ -170,7 +170,7 @@ function createApplication(name, dir, options, done) {
   switch (options.view) {
     case 'ejs':
       app.locals.view = { engine: 'ejs' };
-      pkg.dependencies.ejs = '~3.1.9';
+      pkg.dependencies.ejs = '~3.1.10';
       break
     default:
       app.locals.view = false;
