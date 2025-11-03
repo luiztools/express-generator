@@ -97,7 +97,7 @@ function createApplication(name, dir, options, done) {
       start: 'node ./bin/www'
     },
     dependencies: {
-      debug: '~4.4.0',
+      debug: '~4.4.3',
       express: '~5.1.0'
     }
   }
@@ -118,7 +118,7 @@ function createApplication(name, dir, options, done) {
   // Request logger
   app.locals.modules.logger = 'morgan';
   app.locals.uses.push("logger('dev')");
-  pkg.dependencies.morgan = '~1.10.0';
+  pkg.dependencies.morgan = '~1.10.1';
 
   // Body parsers
   if (options.view) {

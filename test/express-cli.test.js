@@ -59,12 +59,12 @@ describe('express(1)', function () {
         '    "start": "node ./bin/www"\n' +
         '  },\n' +
         '  "dependencies": {\n' +
-        '    "cookie-parser": "~1.4.6",\n' +
-        '    "debug": "~4.3.4",\n' +
-        '    "ejs": "~3.1.9",\n' +
-        '    "express": "~4.18.2",\n' +
+        '    "cookie-parser": "~1.4.7",\n' +
+        '    "debug": "~4.4.3",\n' +
+        '    "ejs": "~3.1.10",\n' +
+        '    "express": "~5.1.0",\n' +
         '    "http-errors": "~2.0.0",\n' +
-        '    "morgan": "~1.10.0"\n' +
+        '    "morgan": "~1.10.1"\n' +
         '  }\n' +
         '}\n')
     })
